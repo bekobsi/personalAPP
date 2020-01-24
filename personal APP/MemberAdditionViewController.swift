@@ -72,9 +72,9 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate{
 //        fullName内に入力した名前を保存
         UserDefaults.standard.set(fullName, forKey:"fullName" )
         
-        //--------------アラート表示のメソッド--------------------------
+//--------------------アラート表示のメソッド--------------------------
         
-        if let text = fullNameAdd.text, text.isEmpty{
+        if let text1 = fullNameAdd.text,let text2 = huriganaAdd.text , text1.isEmpty || text2.isEmpty{
             let alertController = UIAlertController(
                 
                 
