@@ -9,23 +9,19 @@
 import UIKit
 //---------変数の定義-------------
 
-var mamber:[(name:String,hurigana:String,Gender:Bool)] = []
-var fullName:[String] = []
 var gender = "男性"
+//var fullMember = UserDefaults.standard
 
 
 class MemberAdditionViewController: UIViewController ,UITextFieldDelegate{
+    // キーボードを閉じる
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-         print("リターン入力時")
-         // キーボードを閉じる
-         textField.resignFirstResponder()
-         // これでも閉じる
-         // textField.endEditing(true)
-         return true
-     }
+        textField.resignFirstResponder()
+        return true
+    }
     
-
-        
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,20 +37,20 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate{
         
         
         
-
-
+        
+        
         
         // Do any additional setup after loading the view.
     }
-//-----------ふりがなを入力するtextField
+    //-----------ふりがなを入力するtextField--------
     @IBOutlet weak var huriganaAdd: UITextField!
-    //  名前のtextField
+    //-----------名前のtextField-----------------
     @IBOutlet weak var fullNameAdd: UITextField!
     
     
-//-----------性別を設定するSegmentControlボタン
+    //-----------性別を設定するSegmentControlボタン
     @IBAction func genderButton(_ sender: UISegmentedControl) {
-//        押されているボタンを判断しgenderに代入する文
+        //        押されているボタンを判断しgenderに代入する文
         switch sender.selectedSegmentIndex {
         case 0:
             gender = "男性"
@@ -69,10 +65,10 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate{
     
     @IBAction func userSignUp(_ sender: Any) {
         
-//        fullName内に入力した名前を保存
-        UserDefaults.standard.set(fullName, forKey:"fullName" )
+        //        fullName内に入力した名前を保存
+        //        UserDefaults.standard.set(fullName, forKey:"fullName" )
         
-//--------------------アラート表示のメソッド--------------------------
+        //--------------------アラート表示のメソッド--------------------------
         
         if let text1 = fullNameAdd.text,let text2 = huriganaAdd.text , text1.isEmpty || text2.isEmpty{
             let alertController = UIAlertController(
@@ -82,63 +78,78 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate{
                 message: "",
                 preferredStyle:  UIAlertController.Style.alert)
             
-
+            
             //        決定ボタン
             alertController.addAction(
                 UIAlertAction(
                     title: "OK",
-                     style: .default,
+                    style: .default,
                     handler: nil
-                        
-                
+                    
+                    
                 )
             )
             
             
             present(alertController,animated: true,completion: nil)
             
-        
-                
-                
+            
+            
+            
         }else{
-         let alertController = UIAlertController(
-
-
-             title: "以下の内容でよろしいですか？",
-             message: "登録する方の氏名：\(fullNameAdd.text!)\n\(huriganaAdd.text!)\n\(gender)",
-             preferredStyle:  UIAlertController.Style.alert)
-
- //        キャンセルボタン
-         alertController.addAction(
-             UIAlertAction(
-                 title: "キャンセル",
-                 style: .cancel,
-                 handler: nil
-             )
-         )
- //        決定ボタン
-         alertController.addAction(
-             UIAlertAction(
-                 title: "OK",
-                 style: .default,
-                 handler:{action in
-                     UserDefaults.standard.set(fullName, forKey:"fullName" )
-//                     let MemberController = MemberAdditionViewController()
-                     self.performSegue(withIdentifier: "MemberController", sender: nil)
-
-             }
-             )
-         )
-
-
-         present(alertController,animated: true,completion: nil)
-
-
-     }
-     
+            let alertController = UIAlertController(
+                
+                
+                title: "以下の内容でよろしいですか？",
+                message: "登録する方の氏名：\(fullNameAdd.text!)\n\(huriganaAdd.text!)\n\(gender)",
+                preferredStyle:  UIAlertController.Style.alert)
+            
+            //        キャンセルボタン
+            alertController.addAction(
+                UIAlertAction(
+                    title: "キャンセル",
+                    style: .cancel,
+                    handler: nil
+                )
+            )
+            //        決定ボタン
+            alertController.addAction(
+                UIAlertAction(
+                    title: "OK",
+                    style: .default,
+                    handler:{action in
+                        if let name = self.fullNameAdd.text, let hurigana = self.huriganaAdd.text {
+                            //                            let memberAdd = (name,hurigana,gender)
+                            //                            member.append(memberAdd)
+                            
+                            UserDefaults.standard.set(name, forKey:"name" )
+                            UserDefaults.standard.set(hurigana, forKey: "hurigana")
+                            UserDefaults.standard.set(gender, forKey: "gender")
+                            UserDefaults.standard.synchronize()
+                            
+                        }
+                        
+                        self.navigationController?.popViewController(animated: true)
+                        
+                        
+                        
+                        
+                }
+                    
+                    
+                    
+                )
+            )
+            
+            
+            present(alertController,animated: true,completion: nil)
+            
+            
+            
         }
-        
-
+    }
+    
+    
     //-------------ここまでアラート表示メソッド------------------------
     
     
@@ -150,7 +161,6 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate{
         self.view.endEditing(true)
     }
     
-    //------------キーボードの改行を押すと、キーボードが下がる機能-----------
-
+    
 }
 

@@ -13,18 +13,19 @@ class SecondViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
     }
 
 
     
 //-----------セル個数を指定するデリゲートメソッド------
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fullName.count
+        return 1000
     }
     //----------セルに値を設定するデータソースメソッド-------
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "bathMember", for: indexPath)
-        cell.textLabel!.text = fullName[indexPath.row]
+//        cell.textLabel!.text =  [indexPath.row]
         return cell
         }
     

@@ -7,41 +7,70 @@
 //
 
 import UIKit
+var member:[(name:String,hurigana:String,gender:String)] = []
+
 
 class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-        if UserDefaults.standard.object(forKey: "fullName") != nil{
-            fullName = UserDefaults.standard.object(forKey: "fullName") as! [String]
-            
-            
-
-        }
+    var didBack: (() -> Void)?
+    override func didMove(toParent parent: UIViewController?) {
+                  if let name = UserDefaults.standard.string(forKey: "name"),let hurigana = UserDefaults.standard.string(forKey: "hurigana"){
+                    let search = member.first{$0.name == name}
+                       if search == nil{
+                      let memberAdd = (name,hurigana,gender)
+                      member.append(memberAdd)
+                      self.tableView.reloadData()
+                    print("成功です")
+                    }
     }
+        func viewDidLoad() {
+          super.viewDidLoad()
+          // Do any additional setup after loading the view.
+          tableView.dataSource = self
+          tableView.delegate = self
 
 
+      }
+    }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fullName.count
+          
+    
+    
+    @IBOutlet weak var tableView: UITableView!
+    override func viewDidAppear(_ animated: Bool) {
+
     }
+    
+    //--------------------セルを管理するメソッド-----------------------
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return member.count
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let menberCell : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "menberCell", for: indexPath)
-        menberCell.textLabel!.text = fullName[indexPath.row] 
+        let menberCell = tableView.dequeueReusableCell(withIdentifier: "menberCell", for: indexPath)
+        menberCell.textLabel?.text = member[indexPath.row].name
         return menberCell
     }
     
-
+    
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            fullName.remove(at: indexPath.row)
+            member.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
+    //--------------------ここまでセルを管理するメソッド---------------------
 
     
+    
+    
+    
+ 
+    
+    
+    
+    
 }
+
 
