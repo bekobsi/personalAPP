@@ -132,6 +132,21 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6l2-Lj-9lS">
+                                <rect key="frame" x="70" y="302" width="138" height="290"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="0bt-hb-vYc">
+                                        <rect key="frame" x="0.0" y="28" width="138" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0bt-hb-vYc" id="ykt-5t-HeO">
+                                            <rect key="frame" x="0.0" y="0.0" width="138" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="RKd-YM-ucz"/>
@@ -140,6 +155,7 @@
                     <connections>
                         <outlet property="fullNameAdd" destination="pNm-Rl-eU7" id="YCp-lp-GSd"/>
                         <outlet property="huriganaAdd" destination="YTY-hS-1Qx" id="l9O-4K-erh"/>
+                        <outlet property="tableView" destination="6l2-Lj-9lS" id="Mgm-M4-x87"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TJT-m2-LlO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
