@@ -7,48 +7,60 @@
 //
 
 import UIKit
-var member:[(name:String,hurigana:String,gender:String)] = []
+var member:[(name:String,hurigana:String)] = []
 
 
 class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
-
+    
     var didBack: (() -> Void)?
     override func didMove(toParent parent: UIViewController?) {
-                  if let name = UserDefaults.standard.string(forKey: "name"),let hurigana = UserDefaults.standard.string(forKey: "hurigana"){
-                    let search = member.first{$0.name == name}
-                       if search == nil{
-                      let memberAdd = (name,hurigana,gender)
-                      member.append(memberAdd)
-                      self.tableView.reloadData()
-                    print("成功です")
-                    }
-    }
-        func viewDidLoad() {
-          super.viewDidLoad()
-          // Do any additional setup after loading the view.
-          tableView.dataSource = self
-          tableView.delegate = self
-
-
-      }
+        //                  if let name = UserDefaults.standard.string(forKey: "name"),let hurigana = UserDefaults.standard.string(forKey: "hurigana"){
+        //                    let search = member.first{$0.name == name}
+        //                       if search == nil{
+        //                      let memberAdd = (name,hurigana,gender)
+        //                      member.append(memberAdd)
+        //                      self.tableView.reloadData()
+        //                    print("成功です")
+        //                    }
+        //    }
+        // -------------userDefaults内のデータをアンラップして
+        if let name = userDefaults.object(forKey: "names"),let hurigana = userDefaults.object(forKey: "huriganas"){
+            names = name as! Array<String>
+            huriganas = hurigana as! Array<String>
+            for count in 0 ..< names.count {
+                member.append((name:names[count],hurigana:huriganas[count]))
+                print(member)
+            }
+            self.tableView.reloadData() //データをリロードする
+            
+            func viewDidLoad() {
+                super.viewDidLoad()
+                // Do any additional setup after loading the view.
+                tableView.dataSource = self
+                tableView.delegate = self
+                
+            }
+        }
     }
     
-          
+    
     
     
     @IBOutlet weak var tableView: UITableView!
     override func viewDidAppear(_ animated: Bool) {
-
+        
     }
     
     //--------------------セルを管理するメソッド-----------------------
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return member.count
+        return names.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let menberCell = tableView.dequeueReusableCell(withIdentifier: "menberCell", for: indexPath)
-        menberCell.textLabel?.text = member[indexPath.row].name
+        //-----------------------並び替えるもメソッド。しかしバグがあるため一旦コメントアウト
+        //        menberCell.textLabel?.text = member.sorted(by: { ($0.hurigana as String)   < ($1.hurigana as String)})[indexPath.row].name
+        menberCell.textLabel?.text = names[indexPath.row]
         return menberCell
     }
     
@@ -61,16 +73,14 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }
     }
     //--------------------ここまでセルを管理するメソッド---------------------
-
     
     
     
     
- 
+    
+    
     
     
     
     
 }
-
-

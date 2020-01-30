@@ -39,8 +39,9 @@
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
-                                    <outlet property="dataSource" destination="9pv-A4-QxB" id="6YH-rK-PRw"/>
-                                    <outlet property="delegate" destination="9pv-A4-QxB" id="0Rg-AS-0Zn"/>
+                                    <outlet property="dataSource" destination="9pv-A4-QxB" id="8Pu-Y7-IlO"/>
+                                    <outlet property="delegate" destination="9pv-A4-QxB" id="e7Q-G2-tUQ"/>
+                                    <outlet property="prefetchDataSource" destination="9pv-A4-QxB" id="jK4-Ak-5EV"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -168,8 +169,8 @@
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
-                                    <outlet property="dataSource" destination="8rJ-Kc-sve" id="8HQ-1z-3Wi"/>
-                                    <outlet property="delegate" destination="8rJ-Kc-sve" id="miO-E9-mJG"/>
+                                    <outlet property="dataSource" destination="8rJ-Kc-sve" id="CBR-NV-zMo"/>
+                                    <outlet property="delegate" destination="8rJ-Kc-sve" id="0HA-dE-iH6"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -177,6 +178,9 @@
                         <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="TODO" image="folder.fill" catalog="system" id="cPa-gy-q4n"/>
+                    <connections>
+                        <outlet property="tableView" destination="f17-fB-lfl" id="fvj-AD-w4F"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>

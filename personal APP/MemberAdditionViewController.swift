@@ -5,13 +5,12 @@
 //  Created by 原直也 on 2020/01/19.
 //  Copyright © 2020 原直也. All rights reserved.
 //
-
 import UIKit
 //---------変数の定義-------------
-
 var gender = "男性"
-//var fullMember = UserDefaults.standard
-
+var names:Array<String> = []
+var huriganas:Array<String> = []
+let userDefaults = UserDefaults.standard
 
 class MemberAdditionViewController: UIViewController ,UITextFieldDelegate{
     // キーボードを閉じる
@@ -28,7 +27,7 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate{
         fullNameAdd.delegate = self
         fullNameAdd.keyboardType = .namePhonePad
         fullNameAdd.placeholder = "スペースを入れずに入力"
-        fullNameAdd.returnKeyType = .done 
+        fullNameAdd.returnKeyType = .done
         huriganaAdd.keyboardType = .namePhonePad
         huriganaAdd.placeholder = "スペースを入れずに入力"
         huriganaAdd.returnKeyType = .done
@@ -119,14 +118,16 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate{
                     style: .default,
                     handler:{action in
                         if let name = self.fullNameAdd.text, let hurigana = self.huriganaAdd.text {
-                            //                            let memberAdd = (name,hurigana,gender)
-                            //                            member.append(memberAdd)
-                            
-                            UserDefaults.standard.set(name, forKey:"name" )
-                            UserDefaults.standard.set(hurigana, forKey: "hurigana")
+                            names.append(name)
+                            huriganas.append(hurigana)
+                            UserDefaults.standard.set(names, forKey:"names" )
+                            UserDefaults.standard.set(huriganas, forKey: "huriganas")
                             UserDefaults.standard.set(gender, forKey: "gender")
-                            UserDefaults.standard.synchronize()
-                            
+                            names = userDefaults.object(forKey: "names")as! Array<String>
+                            huriganas = userDefaults.object(forKey: "huriganas")as! Array<String>
+                            for count in 0 ..< names.count {
+                                member.append((name:names[count],hurigana:huriganas[count]))
+                            }
                         }
                         
                         self.navigationController?.popViewController(animated: true)
@@ -163,4 +164,3 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate{
     
     
 }
-
