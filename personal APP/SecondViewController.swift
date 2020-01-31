@@ -41,14 +41,14 @@ class SecondViewController: UIViewController, UITableViewDataSource, UITableView
     
 //-----------セル個数を指定するデリゲートメソッド------
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return names.count
+        return member.count
     }
     //----------セルに値を設定するデータソースメソッド-------
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let bathMember = tableView.dequeueReusableCell(withIdentifier: "bathMember", for: indexPath)
-        bathMember.textLabel?.text = names[indexPath.row]
-        
-        return bathMember
+        let bathMemberCell = tableView.dequeueReusableCell(withIdentifier: "bathMemberCell", for: indexPath)
+        //-----------------------並び替えるもメソッド。しかしバグがあるため一旦コメントアウト
+                bathMemberCell.textLabel?.text = member.sorted(by: { ($0.hurigana as String)   < ($1.hurigana as String)})[indexPath.row].name
+        return bathMemberCell
         }
     
     

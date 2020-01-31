@@ -7,6 +7,21 @@
 //
 
 import UIKit
+
+
+
+extension Date {
+    var weekday: String {
+        let calendar = Calendar(identifier: .gregorian)
+        let component = calendar.component(.weekday, from: self)
+        let weekday = component - 1
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ja")
+        return formatter.weekdaySymbols[weekday]
+    }
+}
+
+
 var member:[(name:String,hurigana:String)] = []
 
 
@@ -25,11 +40,17 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         //    }
         // -------------userDefaults内のデータをアンラップして
         if let name = userDefaults.object(forKey: "names"),let hurigana = userDefaults.object(forKey: "huriganas"){
-            names = name as! Array<String>
+
+            names = name as! Array
             huriganas = hurigana as! Array<String>
             for count in 0 ..< names.count {
+
+            let search = member.contains(where: {$0.name == names[count] })
+            if search == false{
+                
                 member.append((name:names[count],hurigana:huriganas[count]))
                 print(member)
+            }
             }
             self.tableView.reloadData() //データをリロードする
             
@@ -53,14 +74,13 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     //--------------------セルを管理するメソッド-----------------------
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return names.count
+        return member.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let menberCell = tableView.dequeueReusableCell(withIdentifier: "menberCell", for: indexPath)
-        //-----------------------並び替えるもメソッド。しかしバグがあるため一旦コメントアウト
-        //        menberCell.textLabel?.text = member.sorted(by: { ($0.hurigana as String)   < ($1.hurigana as String)})[indexPath.row].name
-        menberCell.textLabel?.text = names[indexPath.row]
+        //-----------------------並び替えるもメソッド。----------------
+                menberCell.textLabel?.text = member.sorted(by: { ($0.hurigana as String)   < ($1.hurigana as String)})[indexPath.row].name
         return menberCell
     }
     

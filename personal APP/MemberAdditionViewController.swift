@@ -38,8 +38,16 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
         //-------------tableView関連の設定--------
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.allowsMultipleSelection = true
-        tableView.isScrollEnabled = false
+        tableView.allowsMultipleSelection = true //tableVewを複数選択できる
+        tableView.isScrollEnabled = false //tableViewをスクロールさせない
+        
+        
+        // 使い方
+          let date = Date()
+          print(date) // 2018-06-29 10:35:57 +0000
+          print(date.weekday) // 金曜日
+
+
         
         // Do any additional setup after loading the view.
     }
@@ -51,6 +59,7 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
     @IBOutlet weak var tableView: UITableView!
     
     
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return weekday.count
     }
@@ -59,6 +68,11 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
         Cell.textLabel?.text = weekday[indexPath.row]
         
         Cell.backgroundColor = UIColor.clear
+        Cell.layer.borderColor = UIColor(red: 0, green: 0, blue: 1.0, alpha: 1.0).cgColor
+        Cell.layer.borderWidth = 10
+       Cell.layer.borderWidth = 0.4
+
+
         //  セルの選択時の背景色を消す
         Cell.selectionStyle = UITableViewCell.SelectionStyle.none
         
@@ -176,7 +190,10 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
                             names = userDefaults.object(forKey: "names")as! Array<String>
                             huriganas = userDefaults.object(forKey: "huriganas")as! Array<String>
                             for count in 0 ..< names.count {
+                                
+                                if member.contains(where: {$0.name == names[count] }) == false{
                                 member.append((name:names[count],hurigana:huriganas[count]))
+                                }
                             }
                         }
                         
