@@ -6,16 +6,39 @@
 //  Copyright © 2020 原直也. All rights reserved.
 //
 import UIKit
+
 //---------変数の定義-------------
 
 var gender = "男性"
 var names:Array<String> = []
 var huriganas:Array<String> = []
 let userDefaults = UserDefaults.standard
+var weekDay:[String] = []
+func test(bathChecker:[Int]){
+    if bathChecker.contains(1) == true && weekDay.contains("月曜日") == false{
+        weekDay.append("月曜日")
+    }
+    if bathChecker.contains(2) == true && weekDay.contains("火曜日") == false{
+        weekDay.append("火曜日")
+    }
+    if bathChecker.contains(3) == true && weekDay.contains("水曜日") == false{
+        weekDay.append("水曜日")
+    }
+    if bathChecker.contains(4) == true && weekDay.contains("木曜日") == false{
+        weekDay.append("木曜日")
+    }
+    if bathChecker.contains(5) == true && weekDay.contains("金曜日") == false{
+        weekDay.append("金曜日")
+    }
+    if bathChecker.contains(6) == true && weekDay.contains("土曜日") == false{
+        weekDay.append("土曜日")
+    }
+}
+
 
 class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource{
     //    曜日取得関連の定義
-    var weekday:[String] = ["月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"]
+    var weekDayTemplate:[String] = ["月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"]
     var rowListArray = [Int]()
     var itemListArray = [Int]()
     var sortArray = [Int]()
@@ -60,12 +83,15 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
     
     
     
+    
+    
+//--------------tableViewSwith------------------
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return weekday.count
+        return weekDayTemplate.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let Cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        Cell.textLabel?.text = weekday[indexPath.row]
+        Cell.textLabel?.text = weekDayTemplate[indexPath.row]
         
         Cell.backgroundColor = UIColor.clear
         Cell.layer.borderColor = UIColor(red: 0, green: 0, blue: 1.0, alpha: 1.0).cgColor
@@ -109,9 +135,14 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
         sortArray = rowListArray.sorted{$0 < $1}
         itemListArray = sortArray.map{$0 + 1}
         print(itemListArray)
+        test(bathChecker: itemListArray)
     }
     
-    //-----------性別を設定するSegmentControlボタン
+    
+    
+    
+    
+    //-----------性別を設定するSegmentControlボタン------------
     @IBAction func genderButton(_ sender: UISegmentedControl) {
         //        押されているボタンを判断しgenderに代入する文
         switch sender.selectedSegmentIndex {
@@ -127,44 +158,31 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
     
     
     @IBAction func userSignUp(_ sender: Any) {
-        
-        //        fullName内に入力した名前を保存
-        //        UserDefaults.standard.set(fullName, forKey:"fullName" )
-        
+                
         //--------------------アラート表示のメソッド--------------------------
         
         if let text1 = fullNameAdd.text,let text2 = huriganaAdd.text , text1.isEmpty || text2.isEmpty{
             let alertController = UIAlertController(
-                
-                
+//---------------------------名前が入力されていない時の処理------------------------
                 title: "名前を入力してください",
                 message: "",
                 preferredStyle:  UIAlertController.Style.alert)
-            
-            
             //        決定ボタン
             alertController.addAction(
                 UIAlertAction(
                     title: "OK",
                     style: .default,
                     handler: nil
-                    
-                    
                 )
             )
-            
-            
             present(alertController,animated: true,completion: nil)
             
-            
-            
-            
-        }else{
+        }else if weekDay.isEmpty == true{ //名前とふりがな両方入力されている時の処理
             let alertController = UIAlertController(
                 
                 
                 title: "以下の内容でよろしいですか？",
-                message: "登録する方の氏名：\(fullNameAdd.text!)\n\(huriganaAdd.text!)\n\(gender)",
+                message: "登録する方の氏名：\(fullNameAdd.text!)\n\(huriganaAdd.text!)\n\(gender)\n入浴はなし",
                 preferredStyle:  UIAlertController.Style.alert)
             
             //        キャンセルボタン
@@ -184,11 +202,13 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
                         if let name = self.fullNameAdd.text, let hurigana = self.huriganaAdd.text {
                             names.append(name)
                             huriganas.append(hurigana)
-                            UserDefaults.standard.set(names, forKey:"names" )
-                            UserDefaults.standard.set(huriganas, forKey: "huriganas")
-                            UserDefaults.standard.set(gender, forKey: "gender")
+                            userDefaults.set(names, forKey:"names" )
+                            userDefaults.set(huriganas, forKey: "huriganas")
+                            userDefaults.set(gender, forKey: "gender")
+                            userDefaults.set(self.itemListArray, forKey: "bathWeek")
                             names = userDefaults.object(forKey: "names")as! Array<String>
                             huriganas = userDefaults.object(forKey: "huriganas")as! Array<String>
+                            print(self.itemListArray)
                             for count in 0 ..< names.count {
                                 
                                 if member.contains(where: {$0.name == names[count] }) == false{
@@ -196,23 +216,55 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
                                 }
                             }
                         }
-                        
                         self.navigationController?.popViewController(animated: true)
-                        
-                        
-                        
-                        
                 }
-                    
-                    
-                    
                 )
             )
-            
-            
             present(alertController,animated: true,completion: nil)
+        }else{
+            let alertController = UIAlertController(
+                
+                
+                title: "以下の内容でよろしいですか？",
+                message: "登録する方の氏名：\(fullNameAdd.text!)\n\(huriganaAdd.text!)\n\(gender)\n入浴する曜日は:\(weekDay.joined(separator: ","))",
+                preferredStyle:  UIAlertController.Style.alert)
             
-            
+            //        キャンセルボタン
+            alertController.addAction(
+                UIAlertAction(
+                    title: "キャンセル",
+                    style: .cancel,
+                    handler: nil
+                )
+            )
+            //        決定ボタン
+            alertController.addAction(
+                UIAlertAction(
+                    title: "OK",
+                    style: .default,
+                    handler:{action in
+                        if let name = self.fullNameAdd.text, let hurigana = self.huriganaAdd.text {
+                            names.append(name)
+                            huriganas.append(hurigana)
+                            userDefaults.set(names, forKey:"names" )
+                            userDefaults.set(huriganas, forKey: "huriganas")
+                            userDefaults.set(gender, forKey: "gender")
+                            userDefaults.set(weekDay, forKey: "bathWeek")
+                            names = userDefaults.object(forKey: "names")as! Array<String>
+                            huriganas = userDefaults.object(forKey: "huriganas")as! Array<String>
+                            print(self.itemListArray)
+                            for count in 0 ..< names.count {
+                                
+                                if member.contains(where: {$0.name == names[count] }) == false{
+                                member.append((name:names[count],hurigana:huriganas[count]))
+                                }
+                            }
+                        }
+                        self.navigationController?.popViewController(animated: true)
+                }
+                )
+            )
+            present(alertController,animated: true,completion: nil)
             
         }
     }
