@@ -9,7 +9,7 @@
 import UIKit
 
 
-
+//アプリ内で時間を使うことが出来る
 extension Date {
     var weekday: String {
         let calendar = Calendar(identifier: .gregorian)
@@ -22,36 +22,32 @@ extension Date {
 }
 
 
-var member:[(name:String,hurigana:String)] = []
+var member:[(name:String,hurigana:String,bathWeek:[String?])] = []
 
 
 class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     var didBack: (() -> Void)?
     override func didMove(toParent parent: UIViewController?) {
-        //                  if let name = UserDefaults.standard.string(forKey: "name"),let hurigana = UserDefaults.standard.string(forKey: "hurigana"){
-        //                    let search = member.first{$0.name == name}
-        //                       if search == nil{
-        //                      let memberAdd = (name,hurigana,gender)
-        //                      member.append(memberAdd)
-        //                      self.tableView.reloadData()
-        //                    print("成功です")
-        //                    }
-        //    }
+
         // -------------userDefaults内のデータをアンラップして
         if let name = userDefaults.object(forKey: "names"),let hurigana = userDefaults.object(forKey: "huriganas"){
 
             names = name as! Array
             huriganas = hurigana as! Array<String>
-            for count in 0 ..< names.count {
+            bathWeeks = userDefaults.object(forKey: "bathWeeksAdd") as! [[String?]]
 
+//--------------------タプル配列内にすでに入っているデータを弾き入っていないデータを追加する
+            for count in 0 ..< names.count {
             let search = member.contains(where: {$0.name == names[count] })
             if search == false{
                 
-                member.append((name:names[count],hurigana:huriganas[count]))
+                member.append((name:names[count],hurigana:huriganas[count],bathWeek:bathWeeks[count]))
                 print(member)
             }
             }
+
+            
             self.tableView.reloadData() //データをリロードする
             
             func viewDidLoad() {
@@ -72,7 +68,7 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         
     }
     
-    //--------------------セルを管理するメソッド-----------------------
+    //--------------------セルの個数を設定するメソッド-----------------------
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return member.count
     }

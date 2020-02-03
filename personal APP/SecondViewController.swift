@@ -10,17 +10,8 @@ import UIKit
 class SecondViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
     var didBack: (() -> Void)?
     override func didMove(toParent parent: UIViewController?) {
-        //                  if let name = UserDefaults.standard.string(forKey: "name"),let hurigana = UserDefaults.standard.string(forKey: "hurigana"){
-        //                    let search = member.first{$0.name == name}
-        //                       if search == nil{
-        //                      let memberAdd = (name,hurigana,gender)
-        //                      member.append(memberAdd)
-        //                      self.tableView.reloadData()
-        //                    print("成功です")
-        //                    }
-        //    }
-        // -------------userDefaults内のデータをアンラップして
-        if let name = userDefaults.object(forKey: "names"),let hurigana = userDefaults.object(forKey: "huriganas"){
+        // -------------userDefaults内のデータをアンラップ
+        if let name = userDefaults.object(forKey: "names"),let hurigana = userDefaults.object(forKey: "huriganas"),let bathWeek = userDefaults.object(forKey: "bathWeek"){
             names = name as! Array<String>
             huriganas = hurigana as! Array<String>
 
@@ -45,10 +36,14 @@ class SecondViewController: UIViewController, UITableViewDataSource, UITableView
     }
     //----------セルに値を設定するデータソースメソッド-------
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let bathMemberCell = tableView.dequeueReusableCell(withIdentifier: "bathMemberCell", for: indexPath)
-        //-----------------------並び替えるもメソッド。しかしバグがあるため一旦コメントアウト
+        //-----------------------並び替えるもメソッド。
+        if bathWeeks.isEmpty == false{
                 bathMemberCell.textLabel?.text = member.sorted(by: { ($0.hurigana as String)   < ($1.hurigana as String)})[indexPath.row].name
+        }
         return bathMemberCell
+
         }
     
     

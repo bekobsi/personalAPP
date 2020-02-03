@@ -12,9 +12,12 @@ import UIKit
 var gender = "男性"
 var names:Array<String> = []
 var huriganas:Array<String> = []
+var bathWeeksAdd = [[String?]]()
+var bathWeeks = [[String?]]()
 let userDefaults = UserDefaults.standard
 var weekDay:[String] = []
 func test(bathChecker:[Int]){
+
     if bathChecker.contains(1) == true && weekDay.contains("月曜日") == false{
         weekDay.append("月曜日")
     }
@@ -32,6 +35,7 @@ func test(bathChecker:[Int]){
     }
     if bathChecker.contains(6) == true && weekDay.contains("土曜日") == false{
         weekDay.append("土曜日")
+        
     }
 }
 
@@ -64,6 +68,10 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
         tableView.allowsMultipleSelection = true //tableVewを複数選択できる
         tableView.isScrollEnabled = false //tableViewをスクロールさせない
         
+        
+        if weekDay.isEmpty == false{
+        weekDay.removeAll()
+        }
         
         // 使い方
           let date = Date()
@@ -134,7 +142,7 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
         //  都道府県コードに変換する。
         sortArray = rowListArray.sorted{$0 < $1}
         itemListArray = sortArray.map{$0 + 1}
-        print(itemListArray)
+//        print(itemListArray)
         test(bathChecker: itemListArray)
     }
     
@@ -153,7 +161,6 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
         default:
             gender = "男性"
         }
-        print(gender)
     }
     
     
@@ -200,19 +207,22 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
                     style: .default,
                     handler:{action in
                         if let name = self.fullNameAdd.text, let hurigana = self.huriganaAdd.text {
+                            
+                            bathWeeksAdd.append(weekDay)
+
                             names.append(name)
                             huriganas.append(hurigana)
                             userDefaults.set(names, forKey:"names" )
                             userDefaults.set(huriganas, forKey: "huriganas")
                             userDefaults.set(gender, forKey: "gender")
-                            userDefaults.set(self.itemListArray, forKey: "bathWeek")
+                            userDefaults.set(bathWeeksAdd, forKey: "bathWeeksAdd")
                             names = userDefaults.object(forKey: "names")as! Array<String>
                             huriganas = userDefaults.object(forKey: "huriganas")as! Array<String>
-                            print(self.itemListArray)
+                            bathWeeks = userDefaults.object(forKey: "bathWeeksAdd") as! [[String?]]
                             for count in 0 ..< names.count {
                                 
                                 if member.contains(where: {$0.name == names[count] }) == false{
-                                member.append((name:names[count],hurigana:huriganas[count]))
+                                    member.append((name:names[count],hurigana:huriganas[count],bathWeeks[count]))
                                 }
                             }
                         }
@@ -244,20 +254,25 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
                     style: .default,
                     handler:{action in
                         if let name = self.fullNameAdd.text, let hurigana = self.huriganaAdd.text {
+                            
+                            bathWeeksAdd.append(weekDay)
+
                             names.append(name)
                             huriganas.append(hurigana)
                             userDefaults.set(names, forKey:"names" )
                             userDefaults.set(huriganas, forKey: "huriganas")
                             userDefaults.set(gender, forKey: "gender")
-                            userDefaults.set(weekDay, forKey: "bathWeek")
+                            userDefaults.set(bathWeeksAdd, forKey: "bathWeeksAdd")
                             names = userDefaults.object(forKey: "names")as! Array<String>
                             huriganas = userDefaults.object(forKey: "huriganas")as! Array<String>
-                            print(self.itemListArray)
+                            bathWeeks = userDefaults.object(forKey: "bathWeeksAdd") as! [[String]]
                             for count in 0 ..< names.count {
-                                
                                 if member.contains(where: {$0.name == names[count] }) == false{
-                                member.append((name:names[count],hurigana:huriganas[count]))
-                                }
+                                    member.append((name:names[count],hurigana:huriganas[count],bathWeek:bathWeeks[count]))
+                                    
+                                    print("曜日\(bathWeeksAdd)")
+                                    print("\nメンバー\(member)")
+                                    }
                             }
                         }
                         self.navigationController?.popViewController(animated: true)
