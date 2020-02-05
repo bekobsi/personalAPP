@@ -22,7 +22,7 @@ extension Date {
 }
 
 
-var member:[(name:String,hurigana:String,bathWeek:[String?])] = []
+var member = [(name:String,hurigana:String,gender:String,bathWeek:[String])]()
 
 
 class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
@@ -31,21 +31,30 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     override func didMove(toParent parent: UIViewController?) {
 
         // -------------userDefaults内のデータをアンラップして
-        if let name = userDefaults.object(forKey: "names"),let hurigana = userDefaults.object(forKey: "huriganas"){
+        if let name = userDefaults.stringArray(forKey: "names"),let hurigana = userDefaults.stringArray(forKey: "huriganas"),let gender = userDefaults.stringArray(forKey: "gender"){
 
-            names = name as! Array
-            huriganas = hurigana as! Array<String>
-            bathWeeks = userDefaults.object(forKey: "bathWeeksAdd") as! [[String?]]
-
+            names = name
+            huriganas = hurigana
+            genders = gender
+            bathWeeksAdd = userDefaults.object(forKey: "bathWeeksAdd") as! [[String]]
 //--------------------タプル配列内にすでに入っているデータを弾き入っていないデータを追加する
             for count in 0 ..< names.count {
-            let search = member.contains(where: {$0.name == names[count] })
+                let search = member.contains(where: {$0.name == names[count] })
             if search == false{
-                
-                member.append((name:names[count],hurigana:huriganas[count],bathWeek:bathWeeks[count]))
-                print(member)
+            member.append((name:names[count],hurigana:huriganas[count],gender:genders[count],bathWeek:bathWeeksAdd[count]))
             }
             }
+            
+            
+//-------------------風呂メンバーのソート-------------------------
+            for count in 0 ..< member.count{
+                  if member[count].bathWeek.isEmpty == false{
+                      bathMember.append(member[count])
+                      trueCountArray = [count]
+                      }
+              }
+              print(bathMember)
+            
 
             
             self.tableView.reloadData() //データをリロードする
