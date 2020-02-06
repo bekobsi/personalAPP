@@ -205,7 +205,7 @@
                                     <segment title="女性"/>
                                 </segments>
                                 <connections>
-                                    <action selector="bathGender:" destination="8rJ-Kc-sve" eventType="valueChanged" id="pY8-wV-Bnn"/>
+                                    <action selector="bathGender:" destination="8rJ-Kc-sve" eventType="valueChanged" id="ZNX-2W-SNy"/>
                                 </connections>
                             </segmentedControl>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="失敗" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QE6-jS-0Nr">

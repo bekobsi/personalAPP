@@ -48,15 +48,14 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             
 //-------------------風呂メンバーのソート-------------------------
             for count in 0 ..< member.count{
-                  if member[count].bathWeek.isEmpty == false{
+                  if member[count].bathWeek.isEmpty == false && member[count].bathWeek.contains(date.weekday) == true{
                       bathMember.append(member[count])
-                      trueCountArray = [count]
+                      trueCount += 1
                       }
               }
-              print(bathMember)
             
 
-            
+
             self.tableView.reloadData() //データをリロードする
             
             func viewDidLoad() {

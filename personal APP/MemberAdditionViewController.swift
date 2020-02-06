@@ -16,6 +16,8 @@ var huriganas:Array<String> = []
 var bathWeeksAdd = [[String]]()
 let userDefaults = UserDefaults.standard
 var weekDay = [String]()
+let date = Date()//曜日を表示するための関数
+
 func test(bathChecker:[Int]){// 曜日を入れる関数
 
     if bathChecker.contains(1) == true && weekDay.contains("月曜日") == false{
@@ -74,7 +76,6 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
         }
         
         // 使い方
-          let date = Date()
           print(date) // 2018-06-29 10:35:57 +0000
           print(date.weekday) // 金曜日
 
@@ -270,6 +271,14 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
                             for count in 0 ..< names.count {
                                 if member.contains(where: {$0.name == names[count] }) == false{
                                     member.append((name:names[count],hurigana:huriganas[count],gender:genders[count],bathWeek:bathWeeksAdd[count]))
+                                    
+                                    for count in 0 ..< member.count{
+                                          if member[count].bathWeek.isEmpty == false && member[count].bathWeek.contains(date.weekday) == true{
+                                              bathMember.append(member[count])
+                                              trueCount += 1
+                                              }
+                                      }
+
 
                                     }
                             }
