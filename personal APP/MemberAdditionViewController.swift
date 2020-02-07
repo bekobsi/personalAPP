@@ -19,7 +19,7 @@ var weekDay = [String]()
 let date = Date()//曜日を表示するための関数
 
 func test(bathChecker:[Int]){// 曜日を入れる関数
-
+    
     if bathChecker.contains(1) == true && weekDay.contains("月曜日") == false{
         weekDay.append("月曜日")
     }
@@ -37,7 +37,6 @@ func test(bathChecker:[Int]){// 曜日を入れる関数
     }
     if bathChecker.contains(6) == true && weekDay.contains("土曜日") == false{
         weekDay.append("土曜日")
-        
     }
 }
 
@@ -67,19 +66,19 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
         //-------------tableView関連の設定--------
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.allowsMultipleSelection = true //tableVewを複数選択できる
+//        tableView.allowsMultipleSelection = true //tableVewを複数選択できる
         tableView.isScrollEnabled = false //tableViewをスクロールさせない
         
         
         if weekDay.isEmpty == false{
-        weekDay.removeAll()
+            weekDay.removeAll()
         }
         
         // 使い方
-          print(date) // 2018-06-29 10:35:57 +0000
-          print(date.weekday) // 金曜日
-
-
+        print(date) // 2018-06-29 10:35:57 +0000
+        print(date.weekday) // 金曜日
+        
+        
         
         // Do any additional setup after loading the view.
     }
@@ -94,20 +93,19 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
     
     
     
-//--------------tableViewSwith------------------
+    //--------------tableViewSwith------------------
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return weekDayTemplate.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let Cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         Cell.textLabel?.text = weekDayTemplate[indexPath.row]
-        
         Cell.backgroundColor = UIColor.clear
         Cell.layer.borderColor = UIColor(red: 0, green: 0, blue: 1.0, alpha: 1.0).cgColor
         Cell.layer.borderWidth = 10
-       Cell.layer.borderWidth = 0.4
-
-
+        Cell.layer.borderWidth = 0.4
+        
+        
         //  セルの選択時の背景色を消す
         Cell.selectionStyle = UITableViewCell.SelectionStyle.none
         
@@ -165,12 +163,12 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
     
     
     @IBAction func userSignUp(_ sender: Any) {
-                
+        
         //--------------------アラート表示のメソッド--------------------------
         
         if let text1 = fullNameAdd.text,let text2 = huriganaAdd.text , text1.isEmpty || text2.isEmpty{
             let alertController = UIAlertController(
-//---------------------------名前が入力されていない時の処理------------------------
+                //---------------------------名前が入力されていない時の処理------------------------
                 title: "名前を入力してください",
                 message: "",
                 preferredStyle:  UIAlertController.Style.alert)
@@ -209,7 +207,7 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
                         if let name = self.fullNameAdd.text, let hurigana = self.huriganaAdd.text {
                             
                             bathWeeksAdd.append([])
-
+                            
                             names.append(name)
                             huriganas.append(hurigana)
                             genders.append(gender)
@@ -257,7 +255,7 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
                         if let name = self.fullNameAdd.text, let hurigana = self.huriganaAdd.text {
                             
                             bathWeeksAdd.append(weekDay)
-
+                            
                             names.append(name)
                             huriganas.append(hurigana)
                             genders.append(gender)
@@ -273,14 +271,15 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
                                     member.append((name:names[count],hurigana:huriganas[count],gender:genders[count],bathWeek:bathWeeksAdd[count]))
                                     
                                     for count in 0 ..< member.count{
-                                          if member[count].bathWeek.isEmpty == false && member[count].bathWeek.contains(date.weekday) == true{
-                                              bathMember.append(member[count])
-                                              trueCount += 1
-                                              }
-                                      }
-
-
+                                        if bathMember.contains(where: {$0.name == names[count] }) == false{
+                                            
+                                            if member[count].bathWeek.isEmpty == false && member[count].bathWeek.contains(date.weekday) == true{
+                                                bathMember.append(member[count])
+                                                trueCount += 1
+                                            }
+                                        }
                                     }
+                                }
                             }
                         }
                         self.navigationController?.popViewController(animated: true)

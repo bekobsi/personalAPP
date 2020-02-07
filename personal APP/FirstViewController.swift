@@ -29,33 +29,33 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     var didBack: (() -> Void)?
     override func didMove(toParent parent: UIViewController?) {
-
+        
         // -------------userDefaults内のデータをアンラップして
         if let name = userDefaults.stringArray(forKey: "names"),let hurigana = userDefaults.stringArray(forKey: "huriganas"),let gender = userDefaults.stringArray(forKey: "gender"){
-
+            
             names = name
             huriganas = hurigana
             genders = gender
             bathWeeksAdd = userDefaults.object(forKey: "bathWeeksAdd") as! [[String]]
-//--------------------タプル配列内にすでに入っているデータを弾き入っていないデータを追加する
+            //--------------------タプル配列内にすでに入っているデータを弾き入っていないデータを追加する
             for count in 0 ..< names.count {
                 let search = member.contains(where: {$0.name == names[count] })
-            if search == false{
-            member.append((name:names[count],hurigana:huriganas[count],gender:genders[count],bathWeek:bathWeeksAdd[count]))
-            }
+                if search == false{
+                    member.append((name:names[count],hurigana:huriganas[count],gender:genders[count],bathWeek:bathWeeksAdd[count]))
+                }
             }
             
             
-//-------------------風呂メンバーのソート-------------------------
+            //-------------------風呂メンバーのソート-------------------------
             for count in 0 ..< member.count{
-                  if member[count].bathWeek.isEmpty == false && member[count].bathWeek.contains(date.weekday) == true{
-                      bathMember.append(member[count])
-                      trueCount += 1
-                      }
-              }
+                if member[count].bathWeek.isEmpty == false && member[count].bathWeek.contains(date.weekday) == true{
+                    bathMember.append(member[count])
+                    trueCount += 1
+                }
+            }
             
-
-
+            
+            
             self.tableView.reloadData() //データをリロードする
             
             func viewDidLoad() {
@@ -84,7 +84,7 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let menberCell = tableView.dequeueReusableCell(withIdentifier: "menberCell", for: indexPath)
         //-----------------------並び替えるもメソッド。----------------
-                menberCell.textLabel?.text = member.sorted(by: { ($0.hurigana as String)   < ($1.hurigana as String)})[indexPath.row].name
+        menberCell.textLabel?.text = member.sorted(by: { ($0.hurigana as String)   < ($1.hurigana as String)})[indexPath.row].name
         return menberCell
     }
     
