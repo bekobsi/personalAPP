@@ -8,40 +8,102 @@
 
 import UIKit
 
+
+//アプリ内で時間を使うことが出来る
+extension Date {
+    var weekday: String {
+        let calendar = Calendar(identifier: .gregorian)
+        let component = calendar.component(.weekday, from: self)
+        let weekday = component - 1
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ja")
+        return formatter.weekdaySymbols[weekday]
+    }
+}
+
+
+var member = [(name:String,hurigana:String,gender:String,bathWeek:[String])]()
+
+
 class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
+    
+    var didBack: (() -> Void)?
+    override func didMove(toParent parent: UIViewController?) {
         
-        if UserDefaults.standard.object(forKey: "fullName") != nil{
-            fullName = UserDefaults.standard.object(forKey: "fullName") as! [String]
+        // -------------userDefaults内のデータをアンラップして
+        if let name = userDefaults.stringArray(forKey: "names"),let hurigana = userDefaults.stringArray(forKey: "huriganas"),let gender = userDefaults.stringArray(forKey: "gender"){
+            
+            names = name
+            huriganas = hurigana
+            genders = gender
+            bathWeeksAdd = userDefaults.object(forKey: "bathWeeksAdd") as! [[String]]
+            //--------------------タプル配列内にすでに入っているデータを弾き入っていないデータを追加する
+            for count in 0 ..< names.count {
+                let search = member.contains(where: {$0.name == names[count] })
+                if search == false{
+                    member.append((name:names[count],hurigana:huriganas[count],gender:genders[count],bathWeek:bathWeeksAdd[count]))
+                }
+            }
             
             
-
+            //-------------------風呂メンバーのソート-------------------------
+            for count in 0 ..< member.count{
+                if member[count].bathWeek.isEmpty == false && member[count].bathWeek.contains(date.weekday) == true{
+                    bathMember.append(member[count])
+                    trueCount += 1
+                }
+            }
+            
+            
+            
+            self.tableView.reloadData() //データをリロードする
+            
+            func viewDidLoad() {
+                super.viewDidLoad()
+                // Do any additional setup after loading the view.
+                tableView.dataSource = self
+                tableView.delegate = self
+            }
         }
     }
-
-
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fullName.count
+    
+    
+    
+    @IBOutlet weak var tableView: UITableView!
+    override func viewDidAppear(_ animated: Bool) {
+        
     }
+    
+    //--------------------セルの個数を設定するメソッド-----------------------
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return member.count
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let menberCell : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "menberCell", for: indexPath)
-        menberCell.textLabel!.text = fullName[indexPath.row] 
+        let menberCell = tableView.dequeueReusableCell(withIdentifier: "menberCell", for: indexPath)
+        //-----------------------並び替えるもメソッド。----------------
+        menberCell.textLabel?.text = member.sorted(by: { ($0.hurigana as String) < ($1.hurigana as String)})[indexPath.row].name
         return menberCell
     }
     
-
+    
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            fullName.remove(at: indexPath.row)
+            member.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
-
+    //--------------------ここまでセルを管理するメソッド---------------------
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 }
-
