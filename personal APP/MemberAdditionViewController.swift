@@ -18,7 +18,7 @@ let userDefaults = UserDefaults.standard
 var weekDay = [String]()
 let date = Date()//曜日を表示するための関数
 
-func test(bathChecker:[Int]){// 曜日を入れる関数
+func weekDayAdd(bathChecker:[Int]){// 曜日を入れる関数
     
     if bathChecker.contains(1) == true && weekDay.contains("月曜日") == false{
         weekDay.append("月曜日")
@@ -92,7 +92,6 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
     
     
     
-    
     //--------------tableViewSwith------------------
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return weekDayTemplate.count
@@ -141,7 +140,7 @@ class MemberAdditionViewController: UIViewController ,UITextFieldDelegate,UITabl
         //  都道府県コードに変換する。
         sortArray = rowListArray.sorted{$0 < $1}
         itemListArray = sortArray.map{$0 + 1}
-        test(bathChecker: itemListArray)
+        weekDayAdd(bathChecker: itemListArray)
     }
     
     

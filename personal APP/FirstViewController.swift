@@ -63,7 +63,6 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 // Do any additional setup after loading the view.
                 tableView.dataSource = self
                 tableView.delegate = self
-                
             }
         }
     }
@@ -84,7 +83,7 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let menberCell = tableView.dequeueReusableCell(withIdentifier: "menberCell", for: indexPath)
         //-----------------------並び替えるもメソッド。----------------
-        menberCell.textLabel?.text = member.sorted(by: { ($0.hurigana as String)   < ($1.hurigana as String)})[indexPath.row].name
+        menberCell.textLabel?.text = member.sorted(by: { ($0.hurigana as String) < ($1.hurigana as String)})[indexPath.row].name
         return menberCell
     }
     
